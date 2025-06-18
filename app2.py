@@ -11,7 +11,7 @@ st.markdown("\n**Menu :**")
 st.markdown("- 💰 Prix d'une obligation")
 st.markdown("- 📊 MEDAF")
 st.markdown("- 💼 Rendement de portefeuille")
-st.markdown("- 📉 TRI (Taux de Rendement Interne)")
+st.markdown("- 📉 TRI (Taux de Rentabilité Interne)")
 
 # === pages/1_Obligation.py ===
 import streamlit as st
@@ -70,7 +70,7 @@ import numpy as np
 import numpy_financial as npf
 import matplotlib.pyplot as plt
 
-st.title("📉 Calcul du TRI (Taux de Rendement Interne)")
+st.title("📉 Calcul du TRI (Taux de Rentabilité Interne)")
 
 st.write("Entrez les flux de trésorerie, y compris l'investissement initial (ex: -1000, 200, 300...)")
 
