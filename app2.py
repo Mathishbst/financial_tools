@@ -3,15 +3,16 @@
 # === streamlit_app.py (fichier principal) ===
 import streamlit as st
 
-st.set_page_config(page_title="App Financiere", layout="centered")
-st.title("📊 Application Financiere")
+st.set_page_config(page_title="APP FINANCIAL", layout="centered")
+st.title("📊 APP FINANCIAL")
 
 st.markdown("Bienvenue dans votre outil d'analyse financiere !")
 st.markdown("\n**Menu :**")
-st.markdown("- 💰 Prix d'une obligation")
-st.markdown("- 📊 MEDAF")
-st.markdown("- 💼 Rendement de portefeuille")
-st.markdown("- 📉 TRI (Taux de Rentabilité Interne)")
+st.markdown("- 1ère partie : 💰 Prix d'une obligation")
+st.markdown("- 2ème partie : 📊 MEDAF")
+st.markdown("- 3ème partie : 💼 Rendement de portefeuille")
+st.markdown("- 4ème partie : 📉 TRI (Taux de Rendement Interne)")
+st.markdown("- 5ème partie : Cours des grands indices boursiers")
 
 # === pages/1_Obligation.py ===
 import streamlit as st
@@ -70,7 +71,7 @@ import numpy as np
 import numpy_financial as npf
 import matplotlib.pyplot as plt
 
-st.title("📉 Calcul du TRI (Taux de Rentabilité Interne)")
+st.title("📉 Calcul du TRI (Taux de Rendement Interne)")
 
 st.write("Entrez les flux de trésorerie, y compris l'investissement initial (ex: -1000, 200, 300...)")
 
@@ -97,3 +98,140 @@ if len(flux) > 1:
     ax.legend()
     ax.grid(True)
     st.pyplot(fig)
+
+import streamlit as st
+import yfinance as yf
+
+# === pages/5_COURS.py ===
+
+
+import streamlit as st
+import yfinance as yf
+
+# ✅ Liste de tes indices
+indices = {
+    "S&P 500": "^GSPC",
+    "Dow Jones": "^DJI",
+    "NASDAQ": "^IXIC",
+    "CAC 40": "^FCHI",
+    "DAX": "^GDAXI",
+    "IBEX 35": "^IBEX",
+    "FTSE 100": "^FTSE"
+}
+
+# ✅ Utilise session_state pour stocker l'indice sélectionné
+if "selected_index" not in st.session_state:
+    st.session_state.selected_index = None
+
+# ✅ Si aucun indice sélectionné ➜ Affiche la page d'accueil
+if st.session_state.selected_index is None:
+    st.title("🌍 Suivi des Grands Indices")
+
+    cols = st.columns(3)
+    for i, (name, ticker) in enumerate(indices.items()):
+        data = yf.Ticker(ticker)
+        price = data.history(period="1d")["Close"][-1]
+
+        with cols[i % 3]:
+            st.markdown(f"### **{name}**")
+            st.markdown(f"## **💰 {price:.2f}**")
+            if st.button(f"Voir détail {name}", key=name):
+                st.session_state.selected_index = name
+
+# ✅ Si un indice est sélectionné ➜ Affiche le détail
+else:
+    name = st.session_state.selected_index
+    ticker = indices[name]
+    data = yf.Ticker(ticker)
+    hist = data.history(period="1y")
+    price = data.history(period="1d")["Close"][-1]
+    previous_close = data.history(period="2d")["Close"][0]
+    change = price - previous_close
+    pct_change = (change / previous_close) * 100
+
+    st.button("⬅️ Retour", on_click=lambda: st.session_state.update({"selected_index": None}))
+
+    st.title(f"📈 {name}")
+    st.metric(label="Cours actuel", value=f"{price:.2f}", delta=f"{pct_change:.2f}%")
+
+    st.subheader("Historique sur 1 an")
+    st.line_chart(hist["Close"])
+
+    st.dataframe(hist.tail(10))
+
+import streamlit as st
+import yfinance as yf
+
+
+
+# ✅ Liste de tes actions
+stocks = {
+    "Apple": "AAPL",
+    "Microsoft": "MSFT",
+    "Tesla": "TSLA",
+    "Amazon": "AMZN",
+    "Nvidia": "NVDA",
+    "Airbus": "AIR.PA",
+    "LVMH": "MC.PA",
+    "Air Liquide": "AI.PA",
+    "Thales": "HO.PA",
+    "Samsung Electronics": "005930.KS",
+    "TotalEnergies": "TTE.PA",
+    "Visa": "V",
+    "PayPal": "PYPL",
+    "Hermès": "RMS.PA",
+    "AXA": "CS.PA",
+    "Goldman Sachs": "GS",
+    "Stellantis": "STLA",  # ou STLAP.PA
+    "Alibaba Group": "BABA",
+    "Accor": "AC.PA",
+    "Amundi": "AMUN.PA",
+    "Alphabet (C)": "GOOG",
+    "Nintendo": "7974.T",
+    "Walmart": "WMT",
+    "Spotify": "SPOT"
+}
+
+# ✅ Session state pour gérer le détail
+if "selected_stock" not in st.session_state:
+    st.session_state.selected_stock = None
+
+# ✅ Page d'accueil : liste des actions
+if st.session_state.selected_stock is None:
+    st.title("📈 Watchlist Actions")
+
+    cols = st.columns(3)
+    for i, (name, ticker) in enumerate(stocks.items()):
+        data = yf.Ticker(ticker)
+        try:
+            price = data.history(period="1d")["Close"][-1]
+        except:
+            price = 0.0  # Gérer les cas sans donnée
+
+        with cols[i % 3]:
+            st.markdown(f"### **{name}**")
+            st.markdown(f"## **💵 {price:.2f}**")
+            if st.button(f"Voir détail {name}", key=name):
+                st.session_state.selected_stock = name
+
+# ✅ Détail d'une action
+else:
+    name = st.session_state.selected_stock
+    ticker = stocks[name]
+    data = yf.Ticker(ticker)
+    hist = data.history(period="1y")
+    price = data.history(period="1d")["Close"][-1]
+    previous_close = data.history(period="2d")["Close"][0]
+    change = price - previous_close
+    pct_change = (change / previous_close) * 100
+
+    st.button("⬅️ Retour", on_click=lambda: st.session_state.update({"selected_stock": None}))
+
+    st.title(f"📊 {name}")
+    st.metric(label="Cours actuel", value=f"{price:.2f}", delta=f"{pct_change:.2f}%")
+
+    st.subheader("Historique sur 1 an")
+    st.line_chart(hist["Close"])
+
+    st.dataframe(hist.tail(10))
+
