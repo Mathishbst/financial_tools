@@ -1,16 +1,19 @@
-
+---
 title: "Études des cycles financier"
 author: "Fabien Noisette, Mathis Herbst, Maja Hemms et Maïwenn Patron"
 date: "Mardi 11 Février 2025"
 output:
-  pdf_document:
+  github_document:
     toc: true
+    toc_depth: 3
   html_document:
     toc: true
     toc_float: true
-    number_section: false
+    number_sections: false
     theme: flatly
     df_print: paged
+  pdf_document:
+    toc: true
 lang: fr
 editor_options:
   chunk_output_type: console
