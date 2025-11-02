@@ -1,6 +1,4 @@
-# Structure de base pour une app Streamlit multi-pages sur la finance
 
-# === streamlit_app.py (fichier principal) ===
 import streamlit as st
 
 st.set_page_config(page_title="APP FINANCIAL", layout="centered")
@@ -14,7 +12,6 @@ st.markdown("- 3ème partie : 💼 Rendement de portefeuille")
 st.markdown("- 4ème partie : 📉 TRI (Taux de Rendement Interne)")
 st.markdown("- 5ème partie : Cours des grands indices boursiers")
 
-# === pages/1_Obligation.py ===
 import streamlit as st
 
 st.title("💰 Prix d'une obligation à taux fixe")
@@ -29,7 +26,6 @@ prix += nominal / (1 + taux)**int(maturite)
 
 st.success(f"📌 Prix de l'obligation : {prix:.2f} €")
 
-# === pages/2_MEDAF.py ===
 import streamlit as st
 
 st.title("📊 Calcul du rendement attendu selon le MEDAF")
@@ -42,7 +38,6 @@ medaf = (tauxsansrisque + beta * (rendementmarche - tauxsansrisque)) * 100
 
 st.success(f"📌 Rendement attendu (MEDAF) : {medaf:.2f} %")
 
-# === pages/3_Portefeuille.py ===
 import streamlit as st
 
 st.title("💼 Rendement d'un portefeuille")
@@ -102,13 +97,11 @@ if len(flux) > 1:
 import streamlit as st
 import yfinance as yf
 
-# === pages/5_COURS.py ===
 
 
 import streamlit as st
 import yfinance as yf
 
-# ✅ Liste de tes indices
 indices = {
     "S&P 500": "^GSPC",
     "Dow Jones": "^DJI",
@@ -119,11 +112,9 @@ indices = {
     "FTSE 100": "^FTSE"
 }
 
-# ✅ Utilise session_state pour stocker l'indice sélectionné
 if "selected_index" not in st.session_state:
     st.session_state.selected_index = None
 
-# ✅ Si aucun indice sélectionné ➜ Affiche la page d'accueil
 if st.session_state.selected_index is None:
     st.title("🌍 Suivi des Grands Indices")
 
@@ -138,7 +129,6 @@ if st.session_state.selected_index is None:
             if st.button(f"Voir détail {name}", key=name):
                 st.session_state.selected_index = name
 
-# ✅ Si un indice est sélectionné ➜ Affiche le détail
 else:
     name = st.session_state.selected_index
     ticker = indices[name]
@@ -164,7 +154,6 @@ import yfinance as yf
 
 
 
-# ✅ Liste de tes actions
 stocks = {
     "Apple": "AAPL",
     "Microsoft": "MSFT",
@@ -192,11 +181,9 @@ stocks = {
     "Spotify": "SPOT"
 }
 
-# ✅ Session state pour gérer le détail
 if "selected_stock" not in st.session_state:
     st.session_state.selected_stock = None
 
-# ✅ Page d'accueil : liste des actions
 if st.session_state.selected_stock is None:
     st.title("📈 Watchlist Actions")
 
@@ -214,7 +201,6 @@ if st.session_state.selected_stock is None:
             if st.button(f"Voir détail {name}", key=name):
                 st.session_state.selected_stock = name
 
-# ✅ Détail d'une action
 else:
     name = st.session_state.selected_stock
     ticker = stocks[name]
