@@ -1,11 +1,11 @@
-# Bonjour, je m'appelle Mathis herbst
+# Hello, je m'appelle Mathis herbst
 
 Étudiant en finance - Gestion des risques et des actifs | Passionné de la finance, des datas et du code | Créateur d’outils d’analyse financière
 
 ---
 
 ### À propos de moi
-- Études : Gestion des risques et des actifs, création de projets et modélisation financière 
+- Études : Gestion des risques et des actifs à l'Université Paris-Saclay, création de projets et modélisation financière 
 - Intérêts : Gestion d'actifs et portefeuille, gestion des risques, python, R 
 - Objectif : Créer et présenter mes différents projets 
 
